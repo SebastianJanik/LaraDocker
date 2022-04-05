@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  apache-php:
+    build:
+      context: .
+    container_name: apache-php
+    depends_on:
+      - pgsql
+    ports:
+      - '80:80'
+    volumes:
+      - ./:/var/www/html/lara/
+    networks:
+      - backend
+      - frontend
+  pgsql:
+    image: postgres:14
+    container_name: pgsql
+    ports:
+      - '5432:5432'
+    networks:
+      - backend
+    environment:
+      POSTGRES_PASSWORD: test
+#  composer:
+#    container_name: composer
+#    image: composer:2.3.2
+#    ports:
+#        - '9000:9000'
+#    depends_on:
+#        - apache-php
+#    volumes:
+#      - ./:/usr/local/include/
+#    networks:
+#        - backend
+networks:
+  frontend:
+  backend:
